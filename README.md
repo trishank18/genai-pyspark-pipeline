@@ -28,11 +28,12 @@ location:
 
 ## Sales analytics dashboard
 
-Launch the Streamlit dashboard after generating the data:
+Launch the Flask dashboard after generating the data:
 
 ```powershell
-.\venv\Scripts\python.exe -m streamlit run dashboard.py
+.\venv\Scripts\python.exe app.py
 ```
 
-The dashboard includes overview metrics, top customers, category sales,
-monthly trends, and an optional Pandas-vs-PySpark performance benchmark.
+Open `http://127.0.0.1:5000`. The dashboard includes overview metrics, a
+user-selected top-N customer table with search, category sales, monthly
+trends, and an on-demand Pandas-vs-PySpark performance benchmark.

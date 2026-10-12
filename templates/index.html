@@ -1,0 +1,51 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Sales Intelligence</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+</head>
+<body>
+  <div class="app-shell">
+    <aside class="sidebar">
+      <div class="brand"><span class="brand-mark">✦</span><span>Sales<br><b>Intelligence</b></span></div>
+      <p class="eyebrow">COMMAND CENTER</p>
+      <nav>
+        <a class="active" href="#overview">Overview</a>
+        <a href="#customers">Customers</a>
+        <a href="#categories">Categories</a>
+        <a href="#trends">Monthly trends</a>
+        <a href="#performance">Performance</a>
+      </nav>
+      <div class="sidebar-note"><span class="pulse"></span><div><b>Live dataset</b><small>Parquet source connected</small></div></div>
+    </aside>
+    <main class="content">
+      <header class="topbar">
+        <div><p class="eyebrow">E-COMMERCE ANALYTICS</p><h1>Sales overview</h1><p class="muted">A clear view of performance across your entire sales operation.</p></div>
+        <button class="refresh" onclick="refreshData()">↻ Refresh data</button>
+      </header>
+      <section id="overview" class="metrics">
+        <article class="metric-card"><span class="metric-icon blue">▣</span><div><span>Orders processed</span><strong id="orders">—</strong><small>Across all time</small></div></article>
+        <article class="metric-card"><span class="metric-icon purple">$</span><div><span>Total revenue</span><strong id="revenue">—</strong><small>Gross sales value</small></div></article>
+        <article class="metric-card"><span class="metric-icon orange">↗</span><div><span>Average order value</span><strong id="average-order">—</strong><small>Per completed order</small></div></article>
+        <article class="metric-card"><span class="metric-icon green">◇</span><div><span>Products</span><strong id="products">—</strong><small>In product catalog</small></div></article>
+      </section>
+      <section class="grid-two">
+        <article class="panel" id="categories"><div class="panel-heading"><div><p class="eyebrow">PRODUCT MIX</p><h2>Revenue by category</h2></div><span class="tag">All categories</span></div><div id="category-chart" class="bar-chart"></div></article>
+        <article class="panel" id="trends"><div class="panel-heading"><div><p class="eyebrow">MOMENTUM</p><h2>Monthly revenue</h2></div><span class="tag">Trend</span></div><div id="monthly-chart" class="line-chart"></div></article>
+      </section>
+      <section class="panel" id="customers">
+        <div class="panel-heading customer-heading"><div><p class="eyebrow">CUSTOMER VALUE</p><h2>Top customers</h2><p class="muted">Ranked by lifetime revenue contribution</p></div><div class="controls"><label>Show top <input id="top-input" type="number" min="1" value="20" step="1" onchange="refreshData()"></label><input id="search-input" type="search" placeholder="Search customer ID..." oninput="refreshData()"></div></div>
+        <div class="table-wrap"><table><thead><tr><th>Rank</th><th>Customer ID</th><th>Lifetime value</th><th>Orders</th><th>Share</th></tr></thead><tbody id="customers-table"></tbody></table></div>
+      </section>
+      <section class="panel" id="performance">
+        <div class="panel-heading"><div><p class="eyebrow">ENGINE LAB</p><h2>Pandas vs PySpark</h2><p class="muted">Compare the same 1M-row workflow on demand.</p></div><button class="primary" onclick="runBenchmark()">Run benchmark</button></div>
+        <div id="benchmark-status" class="status"></div><div class="table-wrap"><table><thead><tr><th>Engine</th><th>Load</th><th>Join + revenue</th><th>Group + top 10</th><th>Total</th></tr></thead><tbody id="benchmark-table"><tr><td colspan="5" class="empty">Click “Run benchmark” to measure both engines.</td></tr></tbody></table></div>
+      </section>
+      <footer>Sales Intelligence <span>•</span> Flask analytics workspace</footer>
+    </main>
+  </div>
+  <script src="{{ url_for('static', filename='app.js') }}"></script>
+</body>
+</html>

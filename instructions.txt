@@ -66,17 +66,18 @@ aggregation on the 1,000,000-row orders dataset:
     python compare_performance.py
 
 
-8. Start the Streamlit dashboard
+8. Start the Flask dashboard
 ---------------------------------
 
-    python -m streamlit run app.py
+    python app.py
 
-Open the URL printed by Streamlit, normally:
+Open this URL in your browser:
 
-    http://localhost:8501
+    http://127.0.0.1:5000
 
-The dashboard includes overview metrics, top customers, category sales,
-monthly trends, and an optional Pandas-vs-PySpark benchmark.
+The dashboard includes overview metrics, user-selected top-N customers,
+customer search, category sales, monthly trends, and an on-demand
+Pandas-vs-PySpark performance benchmark.
 
 
 9. Run the test suite
@@ -97,24 +98,24 @@ Small smoke benchmark:
     python -m src.format_benchmark --rows 1000 --output-dir output\format_smoke
 
 
-11. Stop Streamlit
+11. Stop Flask
 -------------------
 
-In the terminal running Streamlit, press:
+In the terminal running Flask, press:
 
     Ctrl+C
 
 
-12. Start Streamlit on another port
+12. Start Flask on another port
 ------------------------------------
 
-    python -m streamlit run app.py --server.port 8502
+    python -c "from app import app; app.run(host='127.0.0.1', port=5001, debug=True)"
 
 
-13. Run Streamlit without opening a browser
+13. Run Flask without debug reloader
 --------------------------------------------
 
-    python -m streamlit run app.py --server.headless true
+    python -c "from app import app; app.run(host='127.0.0.1', port=5000, debug=False)"
 
 
 14. Verify installed package versions
@@ -123,7 +124,7 @@ In the terminal running Streamlit, press:
     python --version
     python -m pip show pandas
     python -m pip show pyspark
-    python -m pip show streamlit
+    python -m pip show Flask
 
 
 15. Deactivate the virtual environment
@@ -143,4 +144,4 @@ Recommended complete first-time sequence
     python main.py
     python run_analytics.py
     python compare_performance.py
-    python -m streamlit run app.py
+    python app.py
