@@ -23,6 +23,9 @@ ENV/
 .ipynb_checkpoints/
 
 # PySpark and generated data
+data/raw/*.csv
+data/processed/*
+!data/processed/.gitkeep
 metastore_db/
 derby.log
 spark-warehouse/
