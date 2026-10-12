@@ -35,11 +35,10 @@ def build_analytics(orders: pd.DataFrame, products: pd.DataFrame) -> tuple[pd.Da
     enriched = orders.merge(products[["product_id", "category", "price"]], on="product_id", how="inner")
     enriched["revenue"] = enriched["quantity"] * enriched["price"]
 
-    top_customers = (
+    customer_summary = (
         enriched.groupby("customer_id", as_index=False)
         .agg(lifetime_value=("revenue", "sum"), order_count=("order_id", "count"))
         .sort_values("lifetime_value", ascending=False)
-        .head(20)
     )
     sales_by_category = (
         enriched.groupby("category", as_index=False)
@@ -53,7 +52,7 @@ def build_analytics(orders: pd.DataFrame, products: pd.DataFrame) -> tuple[pd.Da
         .agg(revenue=("revenue", "sum"), order_count=("order_id", "count"))
         .sort_values("month")
     )
-    return top_customers, sales_by_category, monthly_trends
+    return customer_summary, sales_by_category, monthly_trends
 
 
 @st.cache_data
@@ -156,8 +155,18 @@ with overview_tab:
 
 with customers_tab:
     st.subheader("Top customers by lifetime value")
-    st.bar_chart(top_customers.head(10).set_index("customer_id")["lifetime_value"])
-    st.dataframe(top_customers, use_container_width=True, hide_index=True)
+    customer_count = st.number_input(
+        "Number of top customers",
+        min_value=1,
+        max_value=len(top_customers),
+        value=min(20, len(top_customers)),
+        step=1,
+        help="Enter any number of customers to display, such as 20, 30, or 44.",
+    )
+    selected_customers = top_customers.head(int(customer_count))
+    st.caption(f"Showing the top {len(selected_customers):,} of {len(top_customers):,} customers.")
+    st.bar_chart(selected_customers.set_index("customer_id")["lifetime_value"])
+    st.dataframe(selected_customers, use_container_width=True, hide_index=True)
 
 with categories_tab:
     st.subheader("Sales by category")
