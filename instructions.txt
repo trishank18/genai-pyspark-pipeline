@@ -1,0 +1,146 @@
+GENAI PYSPARK PIPELINE - TERMINAL COMMANDS
+==========================================
+
+Run these commands from the project root:
+
+    C:\Users\trish\OneDrive\Desktop\LMS\genai-pyspark-pipeline
+
+
+1. Open PowerShell and move to the project
+------------------------------------------------
+
+    cd "C:\Users\trish\OneDrive\Desktop\LMS\genai-pyspark-pipeline"
+
+
+2. Create a virtual environment (first-time setup only)
+--------------------------------------------------------
+
+    py -3.14 -m venv venv
+
+
+3. Activate the virtual environment
+------------------------------------
+
+    .\venv\Scripts\Activate.ps1
+
+If PowerShell blocks script execution, run this once for the current terminal:
+
+    Set-ExecutionPolicy -Scope Process -ExecutionPolicy Bypass
+
+Then activate again:
+
+    .\venv\Scripts\Activate.ps1
+
+
+4. Install project dependencies
+--------------------------------
+
+    python -m pip install --upgrade pip
+    python -m pip install -r requirements.txt
+
+
+5. Generate the raw datasets
+-----------------------------
+
+This creates customers, products, and orders as CSV and Parquet files under
+data\raw\:
+
+    python main.py
+
+
+6. Run the Spark analytics job
+-------------------------------
+
+This loads the Parquet files, runs all three analytics operations, displays
+the results, prints timings, and stops Spark:
+
+    python run_analytics.py
+
+
+7. Compare Pandas and PySpark performance
+-------------------------------------------
+
+This benchmarks loading, joining, revenue calculation, and top-10 customer
+aggregation on the 1,000,000-row orders dataset:
+
+    python compare_performance.py
+
+
+8. Start the Streamlit dashboard
+---------------------------------
+
+    python -m streamlit run app.py
+
+Open the URL printed by Streamlit, normally:
+
+    http://localhost:8501
+
+The dashboard includes overview metrics, top customers, category sales,
+monthly trends, and an optional Pandas-vs-PySpark benchmark.
+
+
+9. Run the test suite
+---------------------
+
+    python -m pytest
+
+
+10. Run the file-format benchmark
+----------------------------------
+
+Default benchmark:
+
+    python -m src.format_benchmark
+
+Small smoke benchmark:
+
+    python -m src.format_benchmark --rows 1000 --output-dir output\format_smoke
+
+
+11. Stop Streamlit
+-------------------
+
+In the terminal running Streamlit, press:
+
+    Ctrl+C
+
+
+12. Start Streamlit on another port
+------------------------------------
+
+    python -m streamlit run app.py --server.port 8502
+
+
+13. Run Streamlit without opening a browser
+--------------------------------------------
+
+    python -m streamlit run app.py --server.headless true
+
+
+14. Verify installed package versions
+--------------------------------------
+
+    python --version
+    python -m pip show pandas
+    python -m pip show pyspark
+    python -m pip show streamlit
+
+
+15. Deactivate the virtual environment
+---------------------------------------
+
+    deactivate
+
+
+Recommended complete first-time sequence
+------------------------------------------
+
+    cd "C:\Users\trish\OneDrive\Desktop\LMS\genai-pyspark-pipeline"
+    py -3.14 -m venv venv
+    .\venv\Scripts\Activate.ps1
+    python -m pip install --upgrade pip
+    python -m pip install -r requirements.txt
+    python main.py
+    python run_analytics.py
+    python compare_performance.py
+    python -m streamlit run app.py

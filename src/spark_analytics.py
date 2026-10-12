@@ -13,6 +13,27 @@ from src.config import Settings, configure_logging, create_data_directories
 LOGGER = logging.getLogger(__name__)
 
 
+class SalesAnalytics:
+    """Provide named analytics operations over the raw sales DataFrames."""
+
+    def __init__(self, customers: DataFrame, products: DataFrame, orders: DataFrame) -> None:
+        self.customers = customers
+        self.products = products
+        self.orders = orders_with_revenue(orders, products)
+
+    def top_customers(self) -> DataFrame:
+        """Return customers ranked by lifetime value."""
+        return customer_value(self.orders, self.customers)
+
+    def sales_by_category(self) -> DataFrame:
+        """Return sales totals grouped by product category."""
+        return category_sales(self.orders, self.products)
+
+    def monthly_trends(self) -> DataFrame:
+        """Return revenue and order counts grouped by month."""
+        return monthly_revenue(self.orders)
+
+
 def create_spark_session() -> SparkSession:
     """Create a local Spark session for the analytics job.
 
